@@ -4,6 +4,7 @@ const uuidv4 = require('uuid').v4
 
 const paths = {
     db: `${__dirname}/db.db`,
+    log_dir: `${__dirname}/logs`
 }
 
 const errors = {
@@ -38,10 +39,10 @@ const openDatabase = (path) => {
         }
     })
 
-    // if (response == null)
-    //     return db
+    if (response == null)
+        return db
 
-    return response
+    return null
 }
 
 const readLancamentos = (mes, ano) => {
@@ -123,7 +124,7 @@ const readCategoria = (id) => {
                 let details = JSON.stringify(error)
                 let error_id = 'readCategoria'
                 logToFile(new Error(code, message, details, date, error_id))
-                reject()
+                reject(new Error(code, message, details, date, error_id))
             }
             resolve(row)
         })
